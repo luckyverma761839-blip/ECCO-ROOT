@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoRoot — Conscious Living Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--green-dark:#1a3a2a;--green-mid:#2d6a4f;--green-bright:#52b788;--green-light:#b7e4c7;--cream:#f8f4ed;--warm:#e9c46a;--soil:#5c4033;--text:#1e2d20;--muted:#6b7c6e;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--cream);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.4;}
+
+    /* TICKER */
+    .ticker{background:var(--green-dark);color:var(--green-light);font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:8px 0;overflow:hidden;}
+    .ticker-inner{display:flex;white-space:nowrap;animation:scroll-left 35s linear infinite;}
+    .ticker-inner span{padding:0 3rem;}
+    @keyframes scroll-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    /* HEADER */
+    header{background:rgba(248,244,237,.95);padding:1.2rem 6%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(45,106,79,.15);position:sticky;top:0;z-index:100;backdrop-filter:blur(8px);}
+    .logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .logo-icon{width:40px;height:40px;background:var(--green-mid);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;}
+    .logo-text{font-family:'Playfair Display',serif;font-size:22px;color:var(--green-dark);}
+    .logo-text span{font-style:italic;color:var(--green-mid);}
+    nav{display:flex;gap:1.6rem;align-items:center;flex-wrap:wrap;}
+    nav a{text-decoration:none;color:var(--muted);font-size:13px;letter-spacing:.06em;text-transform:uppercase;transition:color .2s;position:relative;}
+    nav a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--green-bright);transition:width .25s;}
+    nav a:hover{color:var(--green-dark);}
+    nav a:hover::after{width:100%;}
+    .nav-cta{background:var(--green-dark)!important;color:var(--cream)!important;padding:9px 20px;border-radius:2px;}
+    .nav-cta::after{display:none!important;}
+    .nav-cta:hover{background:var(--green-mid)!important;}
+
+    /* HERO */
+    .hero{min-height:90vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
+    .hero-left{display:flex;flex-direction:column;justify-content:center;padding:6rem 5% 6rem 8%;}
+    .hero-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-bright);margin-bottom:1.5rem;display:flex;align-items:center;gap:10px;}
+    .hero-label::before{content:'';display:inline-block;width:30px;height:1px;background:var(--green-bright);}
+    .hero-title{font-family:'Playfair Display',serif;font-size:clamp(38px,5vw,68px);line-height:1.1;color:var(--green-dark);margin-bottom:1.5rem;}
+    .hero-title em{font-style:italic;color:var(--green-mid);}
+    .hero-body{font-size:15px;line-height:1.8;color:var(--muted);max-width:420px;margin-bottom:2.5rem;}
+    .hero-actions{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;}
+    .btn-primary{background:var(--green-dark);color:var(--cream);padding:14px 32px;font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:.1em;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s,transform .15s;text-decoration:none;display:inline-block;border-radius:2px;}
+    .btn-primary:hover{background:var(--green-mid);transform:translateY(-1px);}
+    .btn-ghost{background:none;border:1px solid var(--green-mid);color:var(--green-mid);padding:13px 28px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block;border-radius:2px;}
+    .btn-ghost:hover{background:var(--green-mid);color:var(--cream);}
+    .hero-right{background:var(--green-dark);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+    .hero-badge{position:absolute;bottom:2rem;left:2rem;background:var(--green-bright);color:var(--green-dark);padding:1rem 1.25rem;border-radius:4px;font-size:12px;font-weight:500;letter-spacing:.05em;}
+    .hero-badge strong{display:block;font-size:22px;font-weight:700;}
+
+    /* STATS */
+    .stats{background:var(--green-mid);display:flex;justify-content:space-around;padding:2rem 6%;flex-wrap:wrap;gap:1rem;}
+    .stat{text-align:center;color:var(--cream);}
+    .stat-num{font-family:'Playfair Display',serif;font-size:36px;display:block;line-height:1;}
+    .stat-label{font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.75;margin-top:6px;}
+
+    /* ABOUT */
+    .about{display:grid;grid-template-columns:1fr 1fr;min-height:480px;}
+    .about-text{padding:5rem 8%;display:flex;flex-direction:column;justify-content:center;}
+    .section-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-bright);margin-bottom:.75rem;display:block;}
+    .section-title{font-family:'Playfair Display',serif;font-size:clamp(26px,3vw,42px);color:var(--green-dark);line-height:1.2;margin-bottom:1.25rem;}
+    .section-title em{font-style:italic;color:var(--green-mid);}
+    .about-body{font-size:15px;line-height:1.9;color:var(--muted);margin-bottom:2rem;}
+    .about-visual{background:var(--green-light);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+    .leaf-pattern{position:absolute;inset:0;opacity:.12;background-image:repeating-linear-gradient(45deg,var(--green-mid) 0px,var(--green-mid) 1px,transparent 1px,transparent 30px);}
+
+    /* PRODUCTS */
+    .products{padding:6rem 6%;background:var(--cream);}
+    .section-header{text-align:center;margin-bottom:3.5rem;}
+    .product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;}
+    .product-card{background:#fff;border-radius:6px;overflow:hidden;border:1px solid rgba(45,106,79,.1);transition:transform .2s,box-shadow .2s;}
+    .product-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(26,58,42,.1);}
+    .product-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:52px;}
+    .p-bamboo{background:#e8f5e9;}.p-beeswax{background:#fff8e1;}.p-hemp{background:#f3e5f5;}.p-clay{background:#fbe9e7;}.p-jute{background:#f1f8e9;}.p-coco{background:#fff3e0;}
+    .product-info{padding:1.25rem;}
+    .product-name{font-family:'Playfair Display',serif;font-size:17px;color:var(--green-dark);margin-bottom:6px;}
+    .product-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:1rem;}
+    .product-footer{display:flex;justify-content:space-between;align-items:center;}
+    .product-price{font-size:18px;font-weight:500;color:var(--green-mid);}
+    .product-tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:var(--green-light);color:var(--green-dark);padding:4px 10px;border-radius:2px;}
+    .order-btn{display:block;width:100%;margin-top:1rem;background:var(--green-dark);color:var(--cream);border:none;padding:10px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background .2s;font-family:'DM Sans',sans-serif;}
+    .order-btn:hover{background:var(--green-mid);}
+
+    /* VALUES */
+    .values{background:var(--green-dark);padding:6rem 6%;color:var(--cream);}
+    .values .section-title{color:var(--cream);}
+    .values-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-top:3.5rem;}
+    .value-item{border-top:1px solid rgba(183,228,199,.2);padding-top:1.5rem;}
+    .value-icon{font-size:28px;margin-bottom:1rem;}
+    .value-name{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:8px;color:var(--green-light);}
+    .value-text{font-size:13px;line-height:1.7;color:rgba(248,244,237,.65);}
+
+    /* QUOTE */
+    .quote-banner{background:var(--warm);padding:5rem 8%;text-align:center;position:relative;overflow:hidden;}
+    .quote-banner::before{content:'"';position:absolute;top:-40px;left:5%;font-family:'Playfair Display',serif;font-size:300px;color:rgba(92,64,51,.06);line-height:1;pointer-events:none;}
+    .quote-text{font-family:'Playfair Display',serif;font-size:clamp(20px,3vw,36px);color:var(--soil);line-height:1.4;max-width:800px;margin:0 auto 1rem;position:relative;}
+    .quote-attr{font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--green-mid);}
+
+    /* CONTACT */
+    .contact{padding:6rem 6%;background:#f0ece4;}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3.5rem;align-items:start;}
+    .contact-info-card{background:var(--green-dark);border-radius:8px;padding:2.5rem;color:var(--cream);}
+    .contact-info-card h3{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:1.5rem;color:var(--green-light);}
+    .contact-row{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(183,228,199,.15);}
+    .contact-row:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+    .contact-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
+    .contact-detail-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--green-bright);margin-bottom:4px;}
+    .contact-detail-val{font-size:15px;color:var(--cream);font-weight:500;}
+    .contact-detail-sub{font-size:12px;color:rgba(183,228,199,.65);margin-top:2px;}
+    .whatsapp-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#25d366;color:#fff;border:none;padding:14px;font-size:14px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:4px;font-family:'DM Sans',sans-serif;font-weight:500;transition:background .2s;text-decoration:none;margin-top:1.5rem;}
+    .whatsapp-btn:hover{background:#1ebe5d;}
+    .map-placeholder{background:var(--green-light);border-radius:8px;height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;margin-top:1.2rem;cursor:pointer;border:1px dashed var(--green-mid);text-decoration:none;}
+    .map-placeholder span{font-size:36px;}
+    .map-placeholder p{font-size:13px;color:var(--green-mid);font-weight:500;}
+    .contact-form-card{background:#fff;border-radius:8px;padding:2.5rem;border:1px solid rgba(45,106,79,.1);}
+    .contact-form-card h3{font-family:'Playfair Display',serif;font-size:22px;color:var(--green-dark);margin-bottom:.4rem;}
+    .contact-form-card .sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;}
+
+    /* FORM ELEMENTS */
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+    .form-group{display:flex;flex-direction:column;margin-bottom:1rem;}
+    .form-group label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--green-mid);margin-bottom:6px;font-weight:500;}
+    .form-group input,.form-group select,.form-group textarea{border:1px solid rgba(45,106,79,.25);border-radius:3px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;background:#fff;color:var(--text);transition:border-color .2s;outline:none;}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--green-bright);}
+    .form-group textarea{resize:vertical;min-height:70px;}
+    .form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%232d6a4f' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+    .submit-btn{width:100%;background:var(--green-dark);color:var(--cream);border:none;padding:14px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:3px;font-family:'DM Sans',sans-serif;font-weight:500;transition:background .2s;margin-top:.5rem;}
+    .submit-btn:hover{background:var(--green-mid);}
+    .submit-btn:disabled{background:var(--muted);cursor:not-allowed;}
+    .form-note{font-size:12px;color:var(--muted);text-align:center;margin-top:1rem;line-height:1.6;}
+
+    /* MODAL */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,25,15,.7);z-index:1000;align-items:center;justify-content:center;padding:1rem;}
+    .modal-overlay.active{display:flex;}
+    .modal{background:var(--cream);border-radius:10px;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;padding:2.5rem;position:relative;}
+    .modal-close{position:absolute;top:1.25rem;right:1.25rem;background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted);line-height:1;}
+    .modal-close:hover{color:var(--text);}
+    .modal h2{font-family:'Playfair Display',serif;font-size:24px;color:var(--green-dark);margin-bottom:.4rem;}
+    .modal-sub{font-size:13px;color:var(--muted);margin-bottom:1.75rem;}
+    .success-box{display:none;text-align:center;padding:2rem 0;}
+    .success-box .sicon{font-size:56px;margin-bottom:1rem;}
+    .success-box h3{font-family:'Playfair Display',serif;font-size:24px;color:var(--green-dark);margin-bottom:.75rem;}
+    .success-box p{font-size:14px;color:var(--muted);line-height:1.8;}
+
+    /* FOOTER */
+    footer{background:var(--green-dark);color:var(--green-light);padding:4rem 6% 2rem;}
+    .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(183,228,199,.15);}
+    .footer-brand p{font-size:13px;line-height:1.7;color:rgba(183,228,199,.6);margin-top:1rem;}
+    .footer-phone{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:500;color:var(--green-bright);margin-top:1rem;}
+    .footer-col h4{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--green-bright);margin-bottom:1rem;}
+    .footer-col a{display:block;font-size:13px;color:rgba(183,228,199,.65);text-decoration:none;margin-bottom:8px;transition:color .2s;}
+    .footer-col a:hover{color:var(--cream);}
+    .footer-bottom{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(183,228,199,.4);flex-wrap:wrap;gap:.5rem;}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:2rem;right:2rem;background:var(--green-dark);color:var(--cream);padding:1rem 1.5rem;border-radius:8px;font-size:14px;z-index:9998;transform:translateY(100px);opacity:0;transition:all .4s cubic-bezier(.175,.885,.32,1.275);max-width:300px;line-height:1.5;}
+    .toast.show{transform:translateY(0);opacity:1;}
+    .toast strong{display:block;margin-bottom:2px;}
+
+    /* ANIMATIONS */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    .hero-left>*{animation:fadeUp .6s ease both;}
+    .hero-label{animation-delay:.1s;}.hero-title{animation-delay:.2s;}.hero-body{animation-delay:.3s;}.hero-actions{animation-delay:.4s;}
+
+    @media(max-width:900px){
+      .hero{grid-template-columns:1fr;}.hero-right{height:280px;}
+      .about{grid-template-columns:1fr;}.about-visual{height:240px;}
+      .product-grid{grid-template-columns:1fr 1fr;}
+      .values-grid{grid-template-columns:1fr 1fr;}
+      .contact-grid{grid-template-columns:1fr;}
+      .footer-top{grid-template-columns:1fr 1fr;}
+      .form-row{grid-template-columns:1fr;}
+    }
+    @media(max-width:600px){
+      .product-grid{grid-template-columns:1fr;}
+      .values-grid{grid-template-columns:1fr;}
+      .footer-top{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>🌱 Feel the joy of conscious living</span>
+    <span>♻️ Reduce · Reuse · Respect the Earth</span>
+    <span>📞 Call / WhatsApp: +91 9548104387</span>
+    <span>🌍 Every green decision saves a generation tomorrow</span>
+    <span>🍃 Organic · Bio · Earth-first materials</span>
+    <span>💚 Think green, live clean</span>
+    <span>🌱 Feel the joy of conscious living</span>
+    <span>♻️ Reduce · Reuse · Respect the Earth</span>
+    <span>📞 Call / WhatsApp: +91 9548104387</span>
+    <span>🌍 Every green decision saves a generation tomorrow</span>
+    <span>🍃 Organic · Bio · Earth-first materials</span>
+    <span>💚 Think green, live clean</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a href="#" class="logo">
+    <div class="logo-icon">🌿</div>
+    <span class="logo-text">Eco<span>Root</span></span>
+  </a>
+  <nav>
+    <a href="#products">Shop</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a href="#" class="nav-cta" onclick="openModal(null);return false;">Order Now</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-label">Conscious Living Store</p>
+    <h1 class="hero-title">Good for you.<br/><em>Great for the</em><br/>planet.</h1>
+    <p class="hero-body">We are a bunch of hopefuls developing never-seen-before earth-friendly utility products using natural, organic, and bio materials — crafted for people who care.</p>
+    <div class="hero-actions">
+      <a href="#products" class="btn-primary">Explore Shop</a>
+      <a href="#about" class="btn-ghost">Our Story</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <svg viewBox="0 0 500 600" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;opacity:.9;">
+      <rect width="500" height="600" fill="#1a3a2a"/>
+      <circle cx="380" cy="80" r="55" fill="#b7e4c7" opacity=".18"/>
+      <circle cx="80" cy="60" r="2" fill="#e9c46a" opacity=".8"/>
+      <circle cx="200" cy="40" r="1.5" fill="#e9c46a" opacity=".6"/>
+      <circle cx="310" cy="100" r="2" fill="#e9c46a" opacity=".7"/>
+      <circle cx="440" cy="150" r="1.5" fill="#e9c46a" opacity=".5"/>
+      <ellipse cx="250" cy="580" rx="300" ry="80" fill="#0f2419"/>
+      <rect x="218" y="280" width="64" height="250" rx="8" fill="#5c4033"/>
+      <rect x="232" y="300" width="36" height="230" rx="4" fill="#7a5845"/>
+      <ellipse cx="250" cy="270" rx="130" ry="100" fill="#2d6a4f"/>
+      <ellipse cx="250" cy="210" rx="100" ry="85" fill="#52b788"/>
+      <ellipse cx="250" cy="160" rx="75" ry="65" fill="#74c69d"/>
+      <ellipse cx="250" cy="120" rx="55" ry="50" fill="#95d5b2"/>
+      <rect x="85" y="400" width="28" height="160" rx="6" fill="#5c4033"/>
+      <ellipse cx="99" cy="390" rx="55" ry="50" fill="#1a3a2a"/>
+      <ellipse cx="99" cy="360" rx="40" ry="38" fill="#2d6a4f"/>
+      <ellipse cx="99" cy="335" rx="28" ry="28" fill="#52b788"/>
+      <rect x="387" y="420" width="26" height="140" rx="6" fill="#5c4033"/>
+      <ellipse cx="400" cy="410" rx="50" ry="45" fill="#1a3a2a"/>
+      <ellipse cx="400" cy="382" rx="36" ry="35" fill="#2d6a4f"/>
+      <ellipse cx="400" cy="358" rx="25" ry="26" fill="#52b788"/>
+      <circle cx="160" cy="350" r="3" fill="#e9c46a" opacity=".9"/>
+      <circle cx="340" cy="300" r="2.5" fill="#e9c46a" opacity=".7"/>
+      <circle cx="140" cy="440" r="2" fill="#e9c46a" opacity=".8"/>
+      <circle cx="370" cy="470" r="3" fill="#e9c46a" opacity=".6"/>
+    </svg>
+    <div class="hero-badge"><strong>100%</strong> Earth-First Products</div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><span class="stat-num">5K+</span><span class="stat-label">Happy Customers</span></div>
+  <div class="stat"><span class="stat-num">120+</span><span class="stat-label">Eco Products</span></div>
+  <div class="stat"><span class="stat-num">0</span><span class="stat-label">Plastic Packaging</span></div>
+  <div class="stat"><span class="stat-num">40T</span><span class="stat-label">CO₂ Offset</span></div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-text">
+    <span class="section-label">Who Are We</span>
+    <h2 class="section-title">Hopefuls building a <em>greener</em> tomorrow</h2>
+    <p class="about-body">We are dreamers and doers working constantly on developing never-seen-before earth-friendly utility products using natural, organic, and bio materials. Every product we make is a small revolution against waste — a love letter to the planet.</p>
+    <a href="#contact" class="btn-primary" style="align-self:flex-start;">Get in Touch</a>
+  </div>
+  <div class="about-visual">
+    <div class="leaf-pattern"></div>
+    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="width:70%;max-width:300px;">
+      <circle cx="200" cy="200" r="160" fill="#2d6a4f" opacity=".12"/>
+      <path d="M200 340 Q200 260 200 200" stroke="#2d6a4f" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M200 240 Q230 210 270 220 Q240 250 200 240Z" fill="#52b788"/>
+      <path d="M200 240 Q170 210 130 220 Q160 250 200 240Z" fill="#74c69d"/>
+      <path d="M200 200 Q240 165 290 175 Q255 210 200 200Z" fill="#2d6a4f"/>
+      <path d="M200 200 Q160 165 110 175 Q145 210 200 200Z" fill="#52b788"/>
+      <path d="M200 170 Q225 140 260 148 Q232 175 200 170Z" fill="#95d5b2"/>
+      <path d="M200 170 Q175 140 140 148 Q168 175 200 170Z" fill="#74c69d"/>
+      <circle cx="200" cy="148" r="18" fill="#e9c46a"/>
+      <circle cx="200" cy="148" r="10" fill="#c97f1a"/>
+      <path d="M200 340 Q185 360 170 380" stroke="#5c4033" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M200 340 Q215 360 230 380" stroke="#5c4033" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="section-header">
+    <span class="section-label">Our Products</span>
+    <h2 class="section-title">Earth loves these. <em>So will you.</em></h2>
+  </div>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-img p-bamboo">🎋</div>
+      <div class="product-info">
+        <div class="product-name">Bamboo Toothbrush Set</div>
+        <div class="product-desc">Biodegradable handle, charcoal-infused bristles. Replaces 4 plastic brushes per year.</div>
+        <div class="product-footer"><span class="product-price">₹ 299</span><span class="product-tag">Best Seller</span></div>
+        <button class="order-btn" onclick="openModal('Bamboo Toothbrush Set – ₹299')">🛒 Order Now</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img p-beeswax">🕯️</div>
+      <div class="product-info">
+        <div class="product-name">Beeswax Wrap Kit</div>
+        <div class="product-desc">Reusable food wraps made with organic cotton, beeswax, pine resin, and jojoba oil.</div>
+        <div class="product-footer"><span class="product-price">₹ 549</span><span class="product-tag">Zero Waste</span></div>
+        <button class="order-btn" onclick="openModal('Beeswax Wrap Kit – ₹549')">🛒 Order Now</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img p-hemp">🌿</div>
+      <div class="product-info">
+        <div class="product-name">Hemp Tote Bag</div>
+        <div class="product-desc">Naturally grown, chemical-free hemp. Stronger than cotton, softer over time.</div>
+        <div class="product-footer"><span class="product-price">₹ 449</span><span class="product-tag">Organic</span></div>
+        <button class="order-btn" onclick="openModal('Hemp Tote Bag – ₹449')">🛒 Order Now</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img p-clay">🏺</div>
+      <div class="product-info">
+        <div class="product-name">Clay Water Bottle</div>
+        <div class="product-desc">Handcrafted terracotta, naturally cools water, zero leaching. Ancient wisdom, modern use.</div>
+        <div class="product-footer"><span class="product-price">₹ 349</span><span class="product-tag">Handcrafted</span></div>
+        <button class="order-btn" onclick="openModal('Clay Water Bottle – ₹349')">🛒 Order Now</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img p-jute">🧺</div>
+      <div class="product-info">
+        <div class="product-name">Jute Shopping Bag</div>
+        <div class="product-desc">Golden fibre of India. Biodegrades in 1–2 years. Supports local weavers.</div>
+        <div class="product-footer"><span class="product-price">₹ 199</span><span class="product-tag">Local Made</span></div>
+        <button class="order-btn" onclick="openModal('Jute Shopping Bag – ₹199')">🛒 Order Now</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img p-coco">🥥</div>
+      <div class="product-info">
+        <div class="product-name">Coconut Shell Bowl Set</div>
+        <div class="product-desc">No two alike. Polished naturally, 100% biodegradable. Perfect for smoothie bowls.</div>
+        <div class="product-footer"><span class="product-price">₹ 399</span><span class="product-tag">Unique</span></div>
+        <button class="order-btn" onclick="openModal('Coconut Shell Bowl Set – ₹399')">🛒 Order Now</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values">
+  <div style="text-align:center;">
+    <span class="section-label">Our Values</span>
+    <h2 class="section-title">Built on four <em style="color:var(--green-bright);">pillars</em></h2>
+  </div>
+  <div class="values-grid">
+    <div class="value-item"><div class="value-icon">🌱</div><div class="value-name">Natural Materials</div><div class="value-text">Every product from organic, bio, or natural origins. No synthetics, no shortcuts.</div></div>
+    <div class="value-item"><div class="value-icon">♻️</div><div class="value-name">Zero Waste Design</div><div class="value-text">Packaging is compostable. Products are biodegradable or built to last decades.</div></div>
+    <div class="value-item"><div class="value-icon">🤝</div><div class="value-name">Community First</div><div class="value-text">We partner with local artisans and tribal cooperatives. People + planet together.</div></div>
+    <div class="value-item"><div class="value-icon">🔬</div><div class="value-name">Honest Innovation</div><div class="value-text">R&D that solves real problems without creating new ones. Science in service of nature.</div></div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-banner">
+  <p class="quote-text">Keep it green, keep it clean — every small choice ripples into a revolution.</p>
+  <p class="quote-attr">EcoRoot Manifesto</p>
+</div>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-header">
+    <span class="section-label">Get In Touch</span>
+    <h2 class="section-title">We'd love to <em>hear from you</em></h2>
+  </div>
+  <div class="contact-grid">
+    <div>
+      <div class="contact-info-card">
+        <h3>Contact Details</h3>
+        <div class="contact-row">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-detail-label">Phone / WhatsApp</div>
+            <div class="contact-detail-val">+91 9548104387</div>
+            <div class="contact-detail-sub">Mon–Sat, 9am – 7pm</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📧</div>
+          <div>
+            <div class="contact-detail-label">Email</div>
+            <div class="contact-detail-val">luckyverma761839@gmail.com</div>
+            <div class="contact-detail-sub">Reply within 24 hours</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-detail-label">Location</div>
+            <div class="contact-detail-val">Etawah, Uttar Pradesh</div>
+            <div class="contact-detail-sub">India – 206001</div>
+          </div>
+        </div>
+        <a href="https://wa.me/919548104387?text=Hello%20EcoRoot!%20I%20want%20to%20place%20an%20order." target="_blank" class="whatsapp-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chat on WhatsApp
+        </a>
+        <a href="https://maps.google.com/?q=Etawah,Uttar+Pradesh,India" target="_blank" class="map-placeholder">
+          <span>🗺️</span>
+          <p>View on Google Maps — Etawah, UP</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-form-card">
+      <h3>Send a Message</h3>
+      <p class="sub">Koi sawaal ya query? Seedha message karo — ya product cards pe "Order Now" dabao!</p>
+      <div class="form-group">
+        <label>Aapka Naam</label>
+        <input type="text" id="msg-name" placeholder="Aapka poora naam"/>
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="msg-phone" placeholder="+91 XXXXX XXXXX"/>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea id="msg-body" placeholder="Apna sawaal ya order details yahan likhein..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="sendMessage()">Send Message 📩</button>
+      <p class="form-note">Ya seedha call/WhatsApp karein: <strong>+91 9548104387</strong><br/>luckyverma761839@gmail.com</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">
+        <div class="logo-icon" style="background:var(--green-bright)">🌿</div>
+        <span class="logo-text" style="color:var(--cream)">Eco<span style="color:var(--green-bright)">Root</span></span>
+      </div>
+      <p>Building earth-first products for conscious humans. Because the planet doesn't have a plan B.</p>
+      <div class="footer-phone">📞 +91 9548104387</div>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="#products">Kitchen Products</a>
+      <a href="#products">Personal Care</a>
+      <a href="#products">Home & Living</a>
+      <a href="#products">Gift Sets</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#about">Our Story</a>
+      <a href="#contact">Contact Us</a>
+      <a href="#">Green Blog</a>
+      <a href="#">Careers</a>
+    </div>
+    <div class="footer-col">
+      <h4>Reach Us</h4>
+      <a href="tel:+919548104387">📞 Call Us</a>
+      <a href="https://wa.me/919548104387" target="_blank">💬 WhatsApp</a>
+      <a href="mailto:luckyverma761839@gmail.com">📧 Email Us</a>
+      <a href="https://maps.google.com/?q=Etawah,UP" target="_blank">📍 Etawah, UP</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 EcoRoot. All rights reserved. | Etawah, Uttar Pradesh, India</span>
+    <span>Made with 💚 for Mother Earth</span>
+  </div>
+</footer>
+
+<!-- ORDER MODAL -->
+<div class="modal-overlay" id="orderModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+
+    <div id="form-content">
+      <h2>Place Your Order 🌿</h2>
+      <p class="modal-sub">Form bharo — Lucky bhai ko instantly Email + WhatsApp notification milegi!</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Aapka Naam *</label>
+          <input type="text" id="o-name" placeholder="Full name"/>
+        </div>
+        <div class="form-group">
+          <label>Phone Number *</label>
+          <input type="tel" id="o-phone" placeholder="10-digit mobile"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Product *</label>
+        <select id="o-product">
+          <option value="">— Product chunein —</option>
+          <option>Bamboo Toothbrush Set – ₹299</option>
+          <option>Beeswax Wrap Kit – ₹549</option>
+          <option>Hemp Tote Bag – ₹449</option>
+          <option>Clay Water Bottle – ₹349</option>
+          <option>Jute Shopping Bag – ₹199</option>
+          <option>Coconut Shell Bowl Set – ₹399</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Quantity</label>
+        <input type="number" id="o-qty" placeholder="1" min="1" value="1"/>
+      </div>
+      <div class="form-group">
+        <label>Delivery Address (Ghar/Flat, Street, Mohalla) *</label>
+        <textarea id="o-address" placeholder="Poora address likhein..."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>City *</label>
+          <input type="text" id="o-city" placeholder="Jaise: Etawah"/>
+        </div>
+        <div class="form-group">
+          <label>Pincode *</label>
+          <input type="text" id="o-pin" placeholder="206001"/>
+        </div>
+      </div>
+      <button class="submit-btn" id="submit-btn" onclick="submitOrder()">
+        ✅ Order Confirm Karo — Email + WhatsApp Notify
+      </button>
+      <p class="form-note">
+        Order seedha <strong>luckyverma761839@gmail.com</strong> pe aur<br/>
+        WhatsApp <strong>+91 9548104387</strong> pe notification jaayegi.
+      </p>
+    </div>
+
+    <div class="success-box" id="success-content">
+      <div class="sicon">🎉</div>
+      <h3>Order Placed!</h3>
+      <p id="success-msg"></p>
+      <button class="btn-primary" onclick="closeModal()" style="margin-top:1.5rem;">Done ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <strong id="toast-title"></strong>
+  <span id="toast-msg"></span>
+</div>
+
+<script>
+  const OWNER_PHONE = '919548104387';
+  const OWNER_EMAIL = 'luckyverma761839@gmail.com';
+
+  function openModal(product) {
+    document.getElementById('orderModal').classList.add('active');
+    document.getElementById('form-content').style.display = 'block';
+    document.getElementById('success-content').style.display = 'none';
+    if (product) {
+      const sel = document.getElementById('o-product');
+      for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].text === product) { sel.selectedIndex = i; break; }
+      }
+    }
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('orderModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function showToast(title, msg) {
+    document.getElementById('toast-title').textContent = title;
+    document.getElementById('toast-msg').textContent = msg;
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 4000);
+  }
+
+  function isValidPhone(p) {
+    const clean = p.replace(/[\s\+\-\(\)]/g,'').replace(/^91/,'');
+    return /^[6-9]\d{9}$/.test(clean);
+  }
+
+  function submitOrder() {
+    const name    = document.getElementById('o-name').value.trim();
+    const phone   = document.getElementById('o-phone').value.trim();
+    const product = document.getElementById('o-product').value;
+    const qty     = document.getElementById('o-qty').value || '1';
+    const address = document.getElementById('o-address').value.trim();
+    const city    = document.getElementById('o-city').value.trim();
+    const pin     = document.getElementById('o-pin').value.trim();
+
+    if (!name)              { showToast('⚠️ Naam zaroori hai!', 'Apna poora naam daalein.'); return; }
+    if (!phone)             { showToast('⚠️ Phone number!', 'Apna mobile number daalein.'); return; }
+    if (!isValidPhone(phone)) { showToast('⚠️ Galat number!', '10-digit valid Indian number daalein.'); return; }
+    if (!product)           { showToast('⚠️ Product chunein!', 'Dropdown se product select karein.'); return; }
+    if (!address)           { showToast('⚠️ Address daalein!', 'Delivery ke liye address zaroori hai.'); return; }
+    if (!city)              { showToast('⚠️ City bataiye!', 'Apna shehar likhein.'); return; }
+    if (!pin || pin.length < 6) { showToast('⚠️ Pincode!', '6-digit pincode daalein.'); return; }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Sending notification...';
+
+    const now = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' });
+
+    // ── EMAIL via mailto ──
+    const mailSubject = encodeURIComponent(`🛒 New EcoRoot Order — ${name} (${phone})`);
+    const mailBody = encodeURIComponent(
+`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🌿 NEW ORDER — EcoRoot Store
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👤  Customer Name  :  ${name}
+📞  Phone Number   :  ${phone}
+📦  Product        :  ${product}
+🔢  Quantity       :  ${qty}
+
+📍  Delivery Address:
+    ${address}
+    ${city} — ${pin}
+
+🕐  Order Time     :  ${now}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Reply karke confirm karo Lucky bhai! 💚
+Customer WhatsApp: wa.me/${phone.replace(/[\s\+\-]/g,'').replace(/^91/,'')}
+`);
+    window.location.href = `mailto:${OWNER_EMAIL}?subject=${mailSubject}&body=${mailBody}`;
+
+    // ── WHATSAPP to owner ──
+    const waText = encodeURIComponent(
+`🛒 *New EcoRoot Order!*
+━━━━━━━━━━━━━━━
+👤 *Name:* ${name}
+📞 *Phone:* ${phone}
+📦 *Product:* ${product}
+🔢 *Qty:* ${qty}
+📍 *Address:* ${address}
+🏙️ *City:* ${city}
+📮 *Pincode:* ${pin}
+🕐 *Time:* ${now}
+━━━━━━━━━━━━━━━
+Jaldi confirm karo! 💚`);
+
+    setTimeout(() => {
+      window.open(`https://wa.me/${OWNER_PHONE}?text=${waText}`, '_blank');
+    }, 600);
+
+    // ── Show success screen ──
+    setTimeout(() => {
+      document.getElementById('form-content').style.display = 'none';
+      document.getElementById('success-msg').innerHTML =
+        `Shukriya <strong>${name} ji</strong>! 🙏<br/><br/>` +
+        `Aapka order Lucky bhai ke:<br/>` +
+        `📧 <strong>Email</strong> (luckyverma761839@gmail.com)<br/>` +
+        `💬 <strong>WhatsApp</strong> (+91 9548104387)<br/><br/>` +
+        `…pe bhej diya gaya hai!<br/>` +
+        `<em>24 ghante mein call ya WhatsApp pe confirm karenge.</em>`;
+      document.getElementById('success-content').style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = '✅ Order Confirm Karo — Email + WhatsApp Notify';
+      // reset fields
+      ['o-name','o-phone','o-address','o-city','o-pin'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('o-product').selectedIndex = 0;
+      document.getElementById('o-qty').value = '1';
+    }, 1400);
+  }
+
+  function sendMessage() {
+    const name  = document.getElementById('msg-name').value.trim();
+    const phone = document.getElementById('msg-phone').value.trim();
+    const body  = document.getElementById('msg-body').value.trim();
+    if (!name)  { showToast('⚠️ Naam daalein!', 'Apna naam likho.'); return; }
+    if (!body)  { showToast('⚠️ Message likhein!', 'Kuch to likhna padega bhai.'); return; }
+
+    const waText = encodeURIComponent(`💬 *Message — EcoRoot Website*\n👤 *Name:* ${name}\n📞 *Phone:* ${phone || 'Not given'}\n\n📝 *Message:*\n${body}`);
+    window.open(`https://wa.me/${OWNER_PHONE}?text=${waText}`, '_blank');
+
+    const sub = encodeURIComponent(`Message from ${name} — EcoRoot Website`);
+    const eb  = encodeURIComponent(`Name: ${name}\nPhone: ${phone || 'N/A'}\n\nMessage:\n${body}`);
+    setTimeout(() => { window.location.href = `mailto:${OWNER_EMAIL}?subject=${sub}&body=${eb}`; }, 700);
+
+    ['msg-name','msg-phone','msg-body'].forEach(id => document.getElementById(id).value = '');
+    showToast('✅ Message bheja!', 'Lucky bhai jaldi reply karenge.');
+  }
+
+  // smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+</body>
+</html>
